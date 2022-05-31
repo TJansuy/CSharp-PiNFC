@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
+
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Net.Sockets;
 using System.Threading;
+
+using System.Net.Sockets;
 using System.Net;
+
+using System.Windows.Forms;
 
 namespace PiNFC
 {
@@ -31,28 +28,35 @@ namespace PiNFC
         }
 
         // Separate function to operate on a separate thread so our GUI doesn't stop updating.
-        public static void server()
+        public static void Server()
         {
             Log("Starting server thread");
-   
+
             try
             {
+                // Docs say this is needed to recieve from any IP? May be useful to tighten this down to a local network/mask?
                 IPEndPoint RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, 42069);
+
                 udpclient = new UdpClient(RemoteIpEndPoint); // Pass in IPEndPoint to bind the socket.
-                udpclient.Client.ReceiveTimeout = 1000;
+
+                udpclient.Client.ReceiveTimeout = 1000; // timed in ms. Assuming 1 second timeout is decent for now.
+
                 while (server_running)
                 {
-                    Byte[] recieveBytes;
+                    Byte[] recieveBytes; // Buffer to recieve UDP information in.
+
                     try
                     {
                         recieveBytes = udpclient.Receive(ref RemoteIpEndPoint); // Listen on the bound port.
-                    }catch (SocketException e)
+                    }
+                    catch (SocketException e)
                     {
                         Log($"Socket Exception: {e.Message}"); // C# has such a cool way to format strings
                         continue;
                     }
-                    System.Diagnostics.Debug.WriteLine(Encoding.ASCII.GetString(recieveBytes, 0, recieveBytes.Length));
-                    
+
+                    Log(Encoding.ASCII.GetString(recieveBytes, 0, recieveBytes.Length));
+
                     // If the form is closing before we recieve the last bytes, then exit before trying to update a closed form.
                     if (server_running == false)
                     {
@@ -60,24 +64,33 @@ namespace PiNFC
                     }
 
                     // Must be done as the server runs on a different thread than the GUI.
-                    Form1.textBox1.Invoke( (MethodInvoker) delegate {
+                    Form1.textBox1.Invoke((MethodInvoker)delegate
+                    {
+                        // TODO: Fix this implementation, currently relies on form1.designer.cs textbox1 being static,
+                        //   which resets everytime the designer is updated.
                         Form1.textBox1.AppendText(Encoding.ASCII.GetString(recieveBytes) + Environment.NewLine);
                     });
-                    
+
                 }
-                udpclient.Close();
             }
             catch (Exception e)
             {
                 Log(e.Message);
+            }
+            finally {
+                // Clean up resources
+                if (udpclient != null)
+                {
+                    udpclient.Close(); 
+                }
             }
             Log("Child Thread End");
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
-            ThreadStart childref = new ThreadStart(server);
+            
+            ThreadStart childref = new ThreadStart(Server);
             udpthread = new Thread(childref);
 
             Log("Child Thread Starting");
@@ -92,10 +105,11 @@ namespace PiNFC
             System.Diagnostics.Debug.WriteLine(o);
         }
 
+        // Make sure all threads are cleaned up before closing the program.
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            server_running = false;
-            udpthread.Join();
+            server_running = false; 
+            udpthread.Join(); // Hopefully this will close after the socket RecieveTimeout passes
         }
 
     }
