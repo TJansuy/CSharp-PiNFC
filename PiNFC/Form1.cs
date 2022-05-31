@@ -1,5 +1,8 @@
 ﻿using System;
 
+using System.Data;
+using System.Data.SqlClient;
+
 using System.Text;
 using System.Threading;
 
@@ -97,6 +100,8 @@ namespace PiNFC
             server_running = true;
             udpthread.Start();
 
+            Init_SQL();
+
         }
 
         // Helper method to make writing to desired output easier.
@@ -112,5 +117,19 @@ namespace PiNFC
             udpthread.Join(); // Hopefully this will close after the socket RecieveTimeout passes
         }
 
+        public static void Init_SQL()
+        {
+            SqlConnectionStringBuilder sqlStringBuilder = new SqlConnectionStringBuilder();
+
+            // Yeah this is absolutely not the best idea
+            sqlStringBuilder.UserID = "root";
+            sqlStringBuilder.Password = "root";
+
+            sqlStringBuilder.DataSource = "tcp:127.0.0.1,42069";
+            sqlStringBuilder.ConnectTimeout = 1000; // 1 Second to establish connection?
+
+            Log(sqlStringBuilder.ConnectionString);
+
+        }
     }
 }
