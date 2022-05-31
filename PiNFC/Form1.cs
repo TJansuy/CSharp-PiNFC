@@ -17,7 +17,7 @@ namespace PiNFC
     {
 
         static UdpClient udpclient;
-        static Boolean server_running = false;
+        static volatile Boolean server_running = false; // Used to control the separate server thread
         Thread udpthread;
 
         public Form1()
@@ -37,9 +37,19 @@ namespace PiNFC
                 
                 while (server_running)
                 {
-                    log("Ping");
                     Byte[] recieveBytes = udpclient.Receive(ref RemoteIpEndPoint); // Listen on the bound port.
                     System.Diagnostics.Debug.WriteLine(Encoding.ASCII.GetString(recieveBytes, 0, recieveBytes.Length));
+                    
+                    // If the form is closing before we recieve the last bytes, then exit before trying to update a closed form.
+                    if (server_running == false)
+                    {
+                        break;
+                    }
+
+                    // Must be done as the server runs on a different thread than the GUI.
+                    Form1.textBox1.Invoke( (MethodInvoker) delegate {
+                        Form1.textBox1.AppendText(Encoding.ASCII.GetString(recieveBytes) + Environment.NewLine);
+                    });
                     
                 }
                 udpclient.Close();
@@ -48,6 +58,7 @@ namespace PiNFC
             {
                 log(e.Message);
             }
+            log("Child Thread End");
         }
 
         private void Form1_Load(object sender, EventArgs e)

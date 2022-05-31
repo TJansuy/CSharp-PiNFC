@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32519.379
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PiNFC", "PiNFC.csproj", "{8F66CE9E-5B7F-40C3-863F-BDA0D49A5A5A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8F66CE9E-5B7F-40C3-863F-BDA0D49A5A5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F66CE9E-5B7F-40C3-863F-BDA0D49A5A5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F66CE9E-5B7F-40C3-863F-BDA0D49A5A5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F66CE9E-5B7F-40C3-863F-BDA0D49A5A5A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {749B8797-C4A4-41E7-98E2-FC1B2159C4E4}
+	EndGlobalSection
+EndGlobal
