@@ -119,14 +119,15 @@ namespace PiNFC
 
         public static void Init_SQL()
         {
-            SqlConnectionStringBuilder sqlStringBuilder = new SqlConnectionStringBuilder();
+            SqlConnectionStringBuilder sqlStringBuilder = new SqlConnectionStringBuilder
+            {
+                // Yeah this is absolutely not the best idea
+                UserID = "root",
+                Password = "root",
 
-            // Yeah this is absolutely not the best idea
-            sqlStringBuilder.UserID = "root";
-            sqlStringBuilder.Password = "root";
-
-            sqlStringBuilder.DataSource = "tcp:127.0.0.1,42069";
-            sqlStringBuilder.ConnectTimeout = 1000; // 1 Second to establish connection?
+                DataSource = "tcp:127.0.0.1,42069",
+                ConnectTimeout = 1000 // 1 Second to establish connection?
+            };
 
             Log(sqlStringBuilder.ConnectionString);
 
