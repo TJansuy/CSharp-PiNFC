@@ -1,0 +1,11 @@
+C:\Users\trick\Desktop\NFC\Project\CSharp-PiNFC\PiNFC\bin\Debug\PiNFC.exe.config
+C:\Users\trick\Desktop\NFC\Project\CSharp-PiNFC\PiNFC\bin\Debug\PiNFC.exe
+C:\Users\trick\Desktop\NFC\Project\CSharp-PiNFC\PiNFC\bin\Debug\PiNFC.pdb
+C:\Users\trick\Desktop\NFC\Project\CSharp-PiNFC\PiNFC\obj\Debug\PiNFC.csproj.AssemblyReference.cache
+C:\Users\trick\Desktop\NFC\Project\CSharp-PiNFC\PiNFC\obj\Debug\PiNFC.csproj.SuggestedBindingRedirects.cache
+C:\Users\trick\Desktop\NFC\Project\CSharp-PiNFC\PiNFC\obj\Debug\PiNFC.Form1.resources
+C:\Users\trick\Desktop\NFC\Project\CSharp-PiNFC\PiNFC\obj\Debug\PiNFC.Properties.Resources.resources
+C:\Users\trick\Desktop\NFC\Project\CSharp-PiNFC\PiNFC\obj\Debug\PiNFC.csproj.GenerateResource.cache
+C:\Users\trick\Desktop\NFC\Project\CSharp-PiNFC\PiNFC\obj\Debug\PiNFC.csproj.CoreCompileInputs.cache
+C:\Users\trick\Desktop\NFC\Project\CSharp-PiNFC\PiNFC\obj\Debug\PiNFC.exe
+C:\Users\trick\Desktop\NFC\Project\CSharp-PiNFC\PiNFC\obj\Debug\PiNFC.pdb
