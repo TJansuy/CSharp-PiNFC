@@ -16,8 +16,13 @@ namespace PiNFC
     public partial class Form1 : Form
     {
 
+        // UDP Client used to recieve on separate thread. May be able to entirely localise it on separate thread.
         static UdpClient udpclient;
+        
+        // Attempt to communicate between the threads so the network thread will join safely.
         static volatile Boolean server_running = false; // Used to control the separate server thread
+        
+        // local variable to keep track of the thread. 
         Thread udpthread;
 
         public Form1()
@@ -28,7 +33,7 @@ namespace PiNFC
         // Separate function to operate on a separate thread so our GUI doesn't stop updating.
         public static void server()
         {
-            log("Starting server thread");
+            Log("Starting server thread");
    
             try
             {
@@ -43,7 +48,7 @@ namespace PiNFC
                         recieveBytes = udpclient.Receive(ref RemoteIpEndPoint); // Listen on the bound port.
                     }catch (SocketException e)
                     {
-                        log($"Socket Exception: {e.Message}");
+                        Log($"Socket Exception: {e.Message}"); // C# has such a cool way to format strings
                         continue;
                     }
                     System.Diagnostics.Debug.WriteLine(Encoding.ASCII.GetString(recieveBytes, 0, recieveBytes.Length));
@@ -64,27 +69,25 @@ namespace PiNFC
             }
             catch (Exception e)
             {
-                log(e.Message);
+                Log(e.Message);
             }
-            log("Child Thread End");
+            Log("Child Thread End");
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            label1.Text = "Hello World";
 
             ThreadStart childref = new ThreadStart(server);
             udpthread = new Thread(childref);
 
-            log("Child Thread Starting");
+            Log("Child Thread Starting");
             server_running = true;
             udpthread.Start();
-
 
         }
 
         // Helper method to make writing to desired output easier.
-        private static void log(String o)
+        private static void Log(String o)
         {
             System.Diagnostics.Debug.WriteLine(o);
         }
@@ -94,5 +97,6 @@ namespace PiNFC
             server_running = false;
             udpthread.Join();
         }
+
     }
 }
