@@ -34,10 +34,18 @@ namespace PiNFC
             {
                 IPEndPoint RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, 42069);
                 udpclient = new UdpClient(RemoteIpEndPoint); // Pass in IPEndPoint to bind the socket.
-                
+                udpclient.Client.ReceiveTimeout = 1000;
                 while (server_running)
                 {
-                    Byte[] recieveBytes = udpclient.Receive(ref RemoteIpEndPoint); // Listen on the bound port.
+                    Byte[] recieveBytes;
+                    try
+                    {
+                        recieveBytes = udpclient.Receive(ref RemoteIpEndPoint); // Listen on the bound port.
+                    }catch (SocketException e)
+                    {
+                        log($"Socket Exception: {e.Message}");
+                        continue;
+                    }
                     System.Diagnostics.Debug.WriteLine(Encoding.ASCII.GetString(recieveBytes, 0, recieveBytes.Length));
                     
                     // If the form is closing before we recieve the last bytes, then exit before trying to update a closed form.
